@@ -1,0 +1,51 @@
+<html>
+<head>
+	<meta chartset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bar chart for Tweet Data</title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+	<h1> Bar Chart for Tweet Data </h1>
+	<div id="infovizDiv"></div>
+	<svg width="510" height="510" style="border: 1px solid lightgrey">
+
+	<script>
+		// Load the data
+		d3.json("tweets.json", function(data) {
+			dataViz(data.tweets);
+		})
+
+		function dataViz(incomingData) {
+			incomingData.forEach(function(d) {
+				d.impact = d.favorites.length + d.retweets.length;
+				d.tweetTime = new Date(d.timestamp);
+			})
+
+			// stroes the largest impact of a tweet (an integer)
+			var maxImpact = d3.max(incomingData, function(d) {return d.impact});
+			// array with the min (earliest) tweetTime and max (latest) tweetTime
+			var startEnd = d3.extent(incomingData, function(d) {return d.tweetTime});
+			// scale for tweetTimes
+			var timeRamp = d3.time.scale().domain(startEnd).range([20, 460]);
+			// scales for impact
+			var yScale = d3.scale.linear().domain([0, maxImpact]).range([0, 430]);
+			var radiusScale = d3.scale.linear().domain([0, maxImpact]).range([1, 40]);
+			var colorScale = d3.scale.linear().domain([0, maxImpact]).range(["white", "#990000"]);
+
+			d3.select("svg")
+			    .selectAll("circle")
+			    .data(incomingData)
+			    .enter()
+			    .append("circle")
+			    .attr("r",function(d) {return radiusScale(d.impact)})
+			    .attr("cx",function(d,i){return timeRamp(d.tweetTime)})
+			    .attr("cy", function(d) {return 480-yScale(d.impact)})
+			    .style("fill", function(d) {return colorScale(d.impact)})
+			    .style("stroke","black")
+			    .style("stroke-width","1px")
+		}
+	</script>
+</body>
+</html>

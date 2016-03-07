@@ -1,0 +1,61 @@
+<html>
+<head>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+	<h1> Bar Chart for Tweet Data </h1>
+	<div id="infovizDiv"></div>
+	<svg width="510" height="510" style="border: 1px solid lightgrey">
+
+	<script>
+		// Load the data
+		d3.json("tweets.json", function(data) {
+			dataViz(data.tweets);
+		})
+
+		function dataViz(incomingData) {
+			// Format Data
+			var nestedTweets = d3.nest()
+				.key(function(d) {
+					return d.user;
+				})
+				.entries(incomingData);
+
+			// Measure and scale
+			nestedTweets.forEach(function(d) {
+				d.numTweets = d.values.length; // add a new property to each object
+			});
+
+			// Find what is the max numbr of tweets a user wrote
+			var maxTweets = d3.max(nestedTweets, function(d) {
+				return d.numTweets;
+			});
+
+			// Create the scale for displaying the bars
+			var yScale = d3.scale.linear().domain([0, maxTweets]).range([0, 500]);
+
+			// Create the chart
+			d3.select("svg")
+				.selectAll("rect")
+				.data(nestedTweets)
+					.enter()
+					.append("rect")
+					.attr("width", 100) //fixed value for each bar width
+					.attr("height", function(d){
+						return yScale(d.numTweets);
+					})
+					.attr("x", function(d, i){
+						return i*110; // fixed start for a bar box
+					})
+					.attr("y", function(d){
+						return 500 - yScale(d.numTweets);
+					})
+					.style("fill", "blue")
+					.style("stroke", "black")
+					.style("stroke-width", "1px")
+					.style("opacity", .25);
+		}
+	</script>
+</body>
+</html>
