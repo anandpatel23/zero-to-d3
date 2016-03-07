@@ -1,0 +1,17 @@
+<html>
+<head>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+	<div id="infovizDiv"></div>
+
+	<svg width="510" height="510" style="border: 1px solid grey"></svg>
+
+	<script>
+		d3.json("tweets.json", function(data){
+			console.log(data);
+		});
+	</script>
+</body>
+</html>
