@@ -1,0 +1,61 @@
+<html>
+<head>
+	<meta chartset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Transitions</title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+	<h1>Transitions</h1>
+	<svg id="svg2"width=300 height=300 style="border: 1px solid lightgray">
+		<circle id="c1" r=20 cx=-20 cy=-20 fill="pink"></circle>
+		<circle id="c2" r=20 cx=320 cy=-20 fill="purple"></circle>
+		<circle id="c3" r=20 cx=-20 cy=320 fill="lightgray"></circle>
+		<circle id="c4" r=20 cx=320 cy=320 fill="skyblue"></circle>
+	</svg>
+
+    <p><button id="an2">Run animation</button></p>
+
+	<script>
+		function animation() {
+			d3.select("#c1")
+				.transition()
+				.duration(2000)
+				.attr({
+					"cx": 320,
+					"cy": 320
+				});
+
+			d3.select("#c2")
+				.transition()
+				.duration(2000)
+				.attr({
+					"cx": -20,
+					"cy": 320
+				});
+
+			d3.select("#c3")
+				.transition()
+				.delay(1000)
+				.duration(2000)
+				.attr({
+					"cx": 320,
+					"cy": -20
+				});
+
+			d3.select("#c4")
+    			.transition()
+    			.delay(1000)
+    			.duration(2000)
+    			.attr({
+    				"cx": -20, 
+    				"cy": -20
+    			});
+		
+		}
+
+		d3.select("#an2").on("click", animation);
+	</script>
+</body>
+</html>

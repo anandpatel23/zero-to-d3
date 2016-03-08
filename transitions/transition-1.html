@@ -1,0 +1,70 @@
+<html>
+<head>
+	<meta chartset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Transitions</title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+	<h1>Transitions</h1>
+	<svg id="svg1"width=300 height=300 style="border: 1px solid lightgray"></svg>
+    <p><button id="an1">Run animation</button></p>
+
+	<script>
+		d3.select("#an1").on("click", animate);
+
+		function animate() {
+			d3.select("#svg1").selectAll("circle")
+				.data(points)
+				.enter()
+				.append("circle")
+				.attr("r", 5)
+				.attr("cx", function(d) {
+					return d.x;
+				})
+				.attr("cy", function(d) {
+					return d.y;
+				})
+				.style("fill", "red")
+				.transition()
+				.delay(function(d, i) {
+					return i*300;
+				})
+				.duration(3000)
+				.attr("cx", 265)
+				.remove();
+		}
+
+		var points = [
+			{
+				'x': 10,
+				'y': 5
+			},
+			{
+				'x': 10,
+				'y': 55
+			},
+			{
+				'x': 10,
+				'y': 105
+			},
+			{
+				'x': 10,
+				'y': 155
+			},
+			{
+				'x': 10,
+				'y': 205
+			},
+			{
+				'x': 10,
+				'y': 255
+			}
+		]
+
+		
+
+	</script>
+</body>
+</html>
